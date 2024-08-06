@@ -1,0 +1,1 @@
+tbd -- just a "wrapper" for the noip renewal docker script but made for easier management of multiple accounts

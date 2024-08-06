@@ -1,0 +1,17 @@
+[
+  {
+    "email": "domainemail1@example.com",
+    "password": "password",
+    "type": "domain"
+  },
+  {
+    "email": "domainemail2@example.com",
+    "password": "password",
+    "type": "domain"
+  },
+  {
+    "email": "catchallemail@example.com",
+    "password": "password",
+    "type": "catchall"
+  }
+]
