@@ -7,7 +7,7 @@ This is project serves as a "wrapper" for the [No-IP renewal Docker script](http
 
 
 ## How it works
-![overview](https://raw.githubusercontent.com/callbacked/noip-autorenew-gui/fa9f7f04e5599e5a14883ec965309edf93b3a473/assets/overview.svg)Before running, the user forwards their emails with accounts made with No-IP to a catch all email. **This is important as the program monitors the catch all email's inbox for renewal notices for ALL forwarded domain emails**
+![overview](https://raw.githubusercontent.com/callbacked/noip-autorenew-gui/2a86e95a41c3bbc5c76c3f01345116ad239c58cb/assets/overview.svg)Before running, the user forwards their emails with accounts made with No-IP to a catch all email. **This is important as the program monitors the catch all email's inbox for renewal notices for ALL forwarded domain emails**
 
 Starting out, the user puts in their catchall email's credentials in the application (by default an example is shown to new users).
 
