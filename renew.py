@@ -10,6 +10,7 @@ import time
 from datetime import datetime
 import select
 
+ACCOUNTS_FILE_PATH = 'accounts.json'
 WAIT_TIME = 30  
 MAX_EMAIL_AGE = 60  # anything older than 60 secs is considered stale and should be ignored
 
@@ -164,7 +165,7 @@ def run_docker_command(email, password):
     
 
 def get_credentials(type):
-    with open('accounts.json', 'r') as file:
+    with open(ACCOUNTS_FILE_PATH, 'r') as file:
         accounts = json.load(file)
 
     for account in accounts:
@@ -173,7 +174,7 @@ def get_credentials(type):
     raise ValueError(f"{type.capitalize()} email account not found in accounts.json")
 
 def read_accounts_and_renew():
-    with open('accounts.json', 'r') as file:
+    with open(ACCOUNTS_FILE_PATH, 'r') as file:
         accounts = json.load(file)
     
     print(f"Total accounts to process: {len(accounts)}")

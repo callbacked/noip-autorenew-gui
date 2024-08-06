@@ -5,7 +5,7 @@ import threading
 
 app = Flask(__name__)
 
-ACCOUNTS_FILE = 'accounts.json'
+ACCOUNTS_FILE_PATH = 'accounts.json'
 AUTO_RENEW_SCRIPT = 'renew-auto.py'
 MANUAL_RENEW_SCRIPT = 'renew.py'
 
@@ -35,7 +35,7 @@ def generate_console_output():
 
 @app.route('/')
 def index():
-    with open(ACCOUNTS_FILE, 'r') as file:
+    with open(ACCOUNTS_FILE_PATH, 'r') as file:
         accounts = json.load(file)
     
     catchall = next((account for account in accounts if account.get('type') == 'catchall'), None)
@@ -49,7 +49,7 @@ def add_account():
     password = request.form['password']
     account_type = request.form.get('type', 'domain')
     
-    with open(ACCOUNTS_FILE, 'r') as file:
+    with open(ACCOUNTS_FILE_PATH, 'r') as file:
         accounts = json.load(file)
     
     if account_type == 'catchall':
@@ -57,19 +57,19 @@ def add_account():
     
     accounts.append({'email': email, 'password': password, 'type': account_type})
     
-    with open(ACCOUNTS_FILE, 'w') as file:
+    with open(ACCOUNTS_FILE_PATH, 'w') as file:
         json.dump(accounts, file, indent=2)
     
     return redirect(url_for('index'))
 
 @app.route('/delete_account/<email>', methods=['POST'])
 def delete_account(email):
-    with open(ACCOUNTS_FILE, 'r') as file:
+    with open(ACCOUNTS_FILE_PATH, 'r') as file:
         accounts = json.load(file)
     
     accounts = [account for account in accounts if account['email'] != email]
     
-    with open(ACCOUNTS_FILE, 'w') as file:
+    with open(ACCOUNTS_FILE_PATH, 'w') as file:
         json.dump(accounts, file, indent=2)
     
     return redirect(url_for('index'))
