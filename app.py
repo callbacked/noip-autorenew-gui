@@ -85,4 +85,4 @@ def events():
 
 if __name__ == '__main__':
     threading.Thread(target=start_auto_renew, daemon=True).start()
-    app.run(debug=True)
+    app.run(host='0.0.0.0')
