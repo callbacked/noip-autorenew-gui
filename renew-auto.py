@@ -30,7 +30,7 @@ def check_for_renewal_emails(initial_time):
     print("Waiting for renewal warning emails...", flush=True)
 
     try:
-        status, messages = mail.search(None, '(FROM "*@gmail.com" UNSEEN SUBJECT "ACTION REQUIRED:")') # reads the forwarded renewal notice from the catchall email
+        status, messages = mail.search(None, '(FROM "*@noip.com" UNSEEN SUBJECT "ACTION REQUIRED:")') # reads the forwarded renewal notice from the catchall email
         if status != 'OK':
             print("Error searching for emails.", flush=True)
             return set()
