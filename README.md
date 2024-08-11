@@ -1,54 +1,76 @@
-##  No-IP Autorenew GUI
 
-This is project serves as a "wrapper" for the [No-IP renewal Docker script](https://github.com/simao-silva/noip-renewer). My goal was to expand upon its usage into something that can renew one or multiple No-IP domains you may have either manually **or automatically through the use of a catch-all email.**
+## No-IP Autorenew GUI
+
+# Table of Contents
+
+1. [How it Works](#how-it-works)
+2. [Required Pre-Setup](#required-pre-setup)
+3. [Running the Application](#running-the-application)
+4. [Building It Yourself](#building-it-yourself)
+
+This project serves as a "wrapper" for the [No-IP renewal Docker script](https://github.com/simao-silva/noip-renewer). It allows you to renew one or multiple No-IP domains either manually or automatically using a catch-all email.
 
 ![demo](https://raw.githubusercontent.com/callbacked/noip-autorenew-gui/master/assets/demo.png)
 
-  
-  
+## How it Works
 
-##  How it works
+![overview](https://raw.githubusercontent.com/callbacked/noip-autorenew-gui/2a86e95a41c3bbc5c76c3f01345116ad239c58cb/assets/overview.svg) 
 
-![overview](https://raw.githubusercontent.com/callbacked/noip-autorenew-gui/2a86e95a41c3bbc5c76c3f01345116ad239c58cb/assets/overview.svg)Before running, the user forwards their emails with accounts made with No-IP to a catch all email. **This is important as the program monitors the catch all email's inbox for renewal notices for ALL forwarded domain emails**
+1. **Email Forwarding:** Forward your No-IP domain emails to a catch-all email. The application monitors this inbox for renewal notices.
 
-  
+2. **Initial Setup:** Enter your catch-all email credentials in the application. 
 
-Starting out, the user puts in their catchall email's credentials in the application (by default an example is shown to new users).
+   ![step1](https://raw.githubusercontent.com/callbacked/noip-autorenew-gui/master/assets/step1.gif)
 
-  
+3. **No-IP Login:** Enter your No-IP login details in the "Accounts with Domains" section. Make sure your login email is forwarded to the catch-all email.
 
-![step1](https://raw.githubusercontent.com/callbacked/noip-autorenew-gui/master/assets/step1.gif)
+   This setup is necessary to run the [No-IP renewal Docker script](https://github.com/simao-silva/noip-renewer): `docker run --rm -it simaofsilva/noip-renewer:latest <EMAIL> <PASSWORD>`
 
-  
-  
+   ![step2](https://raw.githubusercontent.com/callbacked/noip-autorenew-gui/master/assets/step2.gif)
 
-Then, the user puts in their **No-IP login details** in "Accounts with Domains", **ensuring that the email for the login is already forwarded with the associated catch all.**
+## Required Pre-Setup
+NOTE: Currently only gmail catch-all emails work since that is what I used when I made this application. If I get around to supporting more email providers I will change it in the documentation. 
 
-  
+Before running the application, you need:
 
-This is required for when the program is prompted to execute the [No-IP renewal Docker script](https://github.com/simao-silva/noip-renewer): ``docker run --rm -it simaofsilva/noip-renewer:latest <EMAIL> <PASSWORD>``
+1. **A catch-all email (using gmail) with an [app password](https://myaccount.google.com/apppasswords), if app passwords are not available, [turn on 2FA](https://support.google.com/accounts/answer/185839) and try again**.
+2. **Your No-IP account login credentials (whose email will be forwarded to the catchall)**
 
-  
-  
+### Forwarding Emails
 
-![step2](https://raw.githubusercontent.com/callbacked/noip-autorenew-gui/master/assets/step2.gif)
-## Running
+1. Configure your No-IP domain email accounts to forward emails with the following subjects **to your catch-all email:**
+   - "ACTION REQUIRED" from @noip.com
+   - "No-IP Verification Code" from @noip.com
 
-1.  ``docker run --name noip-autorenew-gui -d -p 5011:5000 callbacked/noip-autorenew-gui:latest``
+   Here is an example of how I did it using gmail:
+   
+   *For instance, if I had an account with No-IP that was registered with user@gmail.com, I would log in to its gmail account and forward the emails like this*
 
-2. Access the interface through ``localhost:5011``and add in your catch all email + domain emails in the GUI
+![example](https://raw.githubusercontent.com/callbacked/noip-autorenew-gui/master/assets/gmailexample.png)
+2. Repeat for each No-IP domain email that you want to use for future renewals.
 
-3. Add in your catch-all email in the UI + your no-ip login account(s) 
+Note: this step takes quite a long time if you have a lot of domain emails you want to use, sadly there is not a better way to do this.
 
-## Building it yourself
+## Running the Application
 
-1.  ``git clone https://github.com/callbacked/noip-autorenew-gui && cd noip-autorenew-gui``
+1. Start the Docker container:
 
-2. ``docker build -t noip-autorenew-gui:latest .``
+   `docker run --name noip-autorenew-gui -d -p 5011:5000 callbacked/noip-autorenew-gui:latest`
 
-3. ``docker run --name noip-autorenew-gui -d -p 5011:5000 noip-autorenew-gui:latest``
+2. Open your browser and go to `localhost:5011`. 
 
+3. Enter your catch-all email and No-IP login account(s) in the UI.
 
+## Building It Yourself
 
+1. Clone the repository:
 
+   `git clone https://github.com/callbacked/noip-autorenew-gui && cd noip-autorenew-gui`
 
+2. Build the Docker image:
+
+   `docker build -t noip-autorenew-gui:latest .`
+
+3. Run the Docker container:
+
+   `docker run --name noip-autorenew-gui -d -p 5011:5000 noip-autorenew-gui:latest`
