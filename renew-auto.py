@@ -21,13 +21,13 @@ def get_credentials(type):
     raise ValueError(f"{type.capitalize()} email account not found in accounts.json")
 
 def check_for_renewal_emails(initial_time):
-    print("Connecting to the Gmail server...", flush=True)
+    # print("Connecting to the Gmail server...", flush=True)
     gmail_user, gmail_pass = get_credentials('catchall')
     mail = imaplib.IMAP4_SSL("imap.gmail.com")
     mail.login(gmail_user, gmail_pass)
     mail.select("inbox")
 
-    print("Waiting for renewal warning emails...", flush=True)
+    print("Looking for renewal notice emails...", flush=True)
 
     try:
         status, messages = mail.search(None, '(FROM "*@noip.com" UNSEEN SUBJECT "ACTION REQUIRED:")') # reads the forwarded renewal notice from the catchall email
@@ -36,7 +36,7 @@ def check_for_renewal_emails(initial_time):
             return set()
 
         email_ids = messages[0].split()
-        print(f"Email IDs: {email_ids}", flush=True)
+        # print(f"Email IDs: {email_ids}", flush=True)
 
         accounts_to_renew = set()
 
@@ -95,7 +95,6 @@ if __name__ == "__main__":
         if accounts_to_renew:
             renew_matching_accounts(accounts_to_renew)
         else:
-            print("No renewal emails found.", flush=True)
+            print("No renewal emails found — monitoring..", flush=True)
         
-        print(f"Waiting for {CHECK_INTERVAL} seconds before next check.", flush=True)
         time.sleep(CHECK_INTERVAL)

@@ -7,7 +7,7 @@ from email.header import decode_header
 import re
 import pty
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 import select
 
 ACCOUNTS_FILE_PATH = 'accounts.json'
@@ -15,7 +15,7 @@ WAIT_TIME = 30
 MAX_EMAIL_AGE = 60  # anything older than 60 secs is considered stale and should be ignored
 
 def get_totp_code():
-    initial_time = datetime.now(datetime.timezone.utc)
+    initial_time = datetime.now(timezone.utc)
     end_time = time.time() + WAIT_TIME
 
     while time.time() < end_time:
@@ -34,7 +34,7 @@ def get_totp_code():
                 break
 
             email_ids = messages[0].split()
-            print(f"Email IDs: {email_ids}")
+            #print(f"Email IDs: {email_ids}")
 
             if email_ids:
                 for email_id in reversed(email_ids):
@@ -55,7 +55,7 @@ def get_totp_code():
 
                             email_date = msg["date"]
                             email_datetime = email.utils.parsedate_to_datetime(email_date)
-                            if email_datetime > initial_time and (datetime.now(datetime.timezone.utc) - email_datetime).total_seconds() < MAX_EMAIL_AGE:
+                            if email_datetime > initial_time and (datetime.now(timezone.utc) - email_datetime).total_seconds() < MAX_EMAIL_AGE:
                                 if msg.is_multipart():
                                     for part in msg.walk():
                                         if part.get_content_type() == "text/plain":
