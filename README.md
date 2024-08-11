@@ -47,6 +47,8 @@ Before running the application, you need:
    *For instance, if I had an account with No-IP that was registered with user@gmail.com, I would log in to its gmail account and forward the emails like this*
 
 ![example](https://raw.githubusercontent.com/callbacked/noip-autorenew-gui/master/assets/gmailexample.png)
+[*(For more information about forwarding emails on gmail)*](https://support.google.com/mail/answer/10957?hl=en)
+
 2. Repeat for each No-IP domain email that you want to use for future renewals.
 
 Note: this step takes quite a long time if you have a lot of domain emails you want to use, sadly there is not a better way to do this.
