@@ -28,7 +28,7 @@ def get_totp_code():
         print("Waiting for incoming TOTP code...")
 
         try:
-            status, messages = mail.search(None, '(FROM "*@noip.com" UNSEEN SUBJECT "No-IP Verification Code:")') # reads the forwarded OTP code from the catchall email
+            status, messages = mail.search(None, '(FROM "*@noip.com" UNSEEN SUBJECT "No-IP Verification Code:")') # reads the forwarded OTP code from the catchall email (IF NEEDED)
             if status != 'OK':
                 print("Error searching for emails.")
                 break
