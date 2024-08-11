@@ -8,14 +8,19 @@ app = Flask(__name__)
 ACCOUNTS_FILE_PATH = 'accounts.json'
 AUTO_RENEW_SCRIPT = 'renew-auto.py'
 MANUAL_RENEW_SCRIPT = 'renew.py'
+RENEWAL_OUTPUT_FILE = 'manual_renew_output.txt'
+is_renewal_running = False
 
 def start_auto_renew():
+    global is_renewal_running
+    is_renewal_running = True
     process = subprocess.Popen(['python', AUTO_RENEW_SCRIPT], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     for line in iter(process.stdout.readline, ''):
         print(line, end='')  
     process.stdout.close()
     process.stderr.close()
     process.wait()
+    is_renewal_running = False
 
 def generate_console_output():
     process = subprocess.Popen(['python', AUTO_RENEW_SCRIPT], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
@@ -76,8 +81,29 @@ def delete_account(email):
 
 @app.route('/renew', methods=['POST'])
 def renew():
-    subprocess.Popen(['python', MANUAL_RENEW_SCRIPT])
+    global is_renewal_running
+    is_renewal_running = True
+    def run_manual_renew():
+        with open(RENEWAL_OUTPUT_FILE, 'w') as file:
+            process = subprocess.Popen(['python', MANUAL_RENEW_SCRIPT], stdout=file, stderr=file, text=True)
+            process.wait()
+        global is_renewal_running
+        is_renewal_running = False
+    threading.Thread(target=run_manual_renew, daemon=True).start()
     return jsonify({'status': 'Manual renewal started'})
+
+@app.route('/manual_renew_log')
+def manual_renew_log():
+    try:
+        with open(RENEWAL_OUTPUT_FILE, 'r') as file:
+            log = file.read()
+        return jsonify({'log': log})
+    except Exception as e:
+        return jsonify({'error': str(e)})
+
+@app.route('/is_renewal_running')
+def is_renewal_running_status():
+    return jsonify({'running': is_renewal_running})
 
 @app.route('/events')
 def events():
