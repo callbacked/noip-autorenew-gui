@@ -34,7 +34,7 @@ This is required for when the program is prompted to execute the [No-IP renewal 
 ![step2](https://raw.githubusercontent.com/callbacked/noip-autorenew-gui/master/assets/step2.gif)
 ## Running
 
-1.  docker run --name noip-autorenew-gui -d -p 5011:5000 callbacked/noip-autorenew-gui:latest
+1.  ``docker run --name noip-autorenew-gui -d -p 5011:5000 callbacked/noip-autorenew-gui:latest``
 
 2. Access the interface through ``localhost:5011``and add in your catch all email + domain emails in the GUI
 
@@ -44,9 +44,9 @@ This is required for when the program is prompted to execute the [No-IP renewal 
 
 1.  ``git clone https://github.com/callbacked/noip-autorenew-gui && cd noip-autorenew-gui``
 
-2. docker build -t noip-autorenew-gui:latest .
+2. ``docker build -t noip-autorenew-gui:latest .``
 
-3. docker run --name noip-autorenew-gui -d -p 5011:5000 noip-autorenew-gui:latest
+3. ``docker run --name noip-autorenew-gui -d -p 5011:5000 noip-autorenew-gui:latest``
 
 
 
