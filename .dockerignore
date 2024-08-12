@@ -1,6 +1,10 @@
 /__pycache__
 /.devcontainer
 /.github
+/assets
 accounts-dev.json
 manual_renew_output.txt
 todo.txt
+.gitignore
+update_image.sh
+README.md
