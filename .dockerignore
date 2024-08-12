@@ -1,4 +1,6 @@
+/__pycache__
 /.devcontainer
 /.github
 accounts-dev.json
 manual_renew_output.txt
+todo.txt
