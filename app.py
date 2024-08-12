@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify, Response
+from flask import Flask, render_template, request, redirect, url_for, jsonify, Response, send_file
 import json
 import subprocess
 import threading
+import os
 
 app = Flask(__name__)
 
@@ -108,6 +109,24 @@ def is_renewal_running_status():
 @app.route('/events')
 def events():
     return Response(generate_console_output(), content_type='text/event-stream')
+
+@app.route('/export_accounts')
+def export_accounts():
+    return send_file(ACCOUNTS_FILE_PATH, as_attachment=True)
+
+@app.route('/import_accounts', methods=['POST'])
+def import_accounts():
+    if 'file' not in request.files:
+        return redirect(url_for('index'))
+    
+    file = request.files['file']
+    if file.filename == '':
+        return redirect(url_for('index'))
+    
+    if file and file.filename.endswith('.json'):
+        file.save(ACCOUNTS_FILE_PATH)
+    
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     threading.Thread(target=start_auto_renew, daemon=True).start()

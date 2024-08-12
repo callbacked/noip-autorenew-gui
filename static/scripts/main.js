@@ -103,6 +103,47 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
+    document.getElementById('export-button').addEventListener('click', function() {
+        fetch('/export_accounts')
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'accounts.json'; 
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+            })
+            .catch(error => console.error('Error exporting accounts:', error));
+    });
+    
+    document.getElementById('import-button').addEventListener('click', function() {
+        const form = document.getElementById('import-form');
+        const fileInput = form.querySelector('input[type="file"]');
+        
+        if (fileInput.files.length > 0) {
+            form.submit();
+        } else {
+            fileInput.click();
+        }
+    });
+
+    const importButton = document.getElementById('import-button');
+    const fileInput = document.querySelector('#import-form input[type="file"]');
+
+    fileInput.addEventListener('change', function() {
+        if (fileInput.files.length > 0) {
+            importButton.textContent = 'Submit';
+            importButton.classList.add('btn-success');
+        } else {
+            importButton.textContent = 'Import Accounts';
+            importButton.classList.remove('btn-success');
+        }
+    });
+    
+
     if (events) {
         const eventSource = new EventSource("/events");
         eventSource.onmessage = function(event) {
