@@ -57,7 +57,7 @@ Note: this step takes quite a long time if you have a lot of domain emails you w
 
 1. Start the Docker container:
 
-   `docker run --name noip-autorenew-gui -d -p 5011:5000 callbacked/noip-autorenew-gui:latest`
+   `docker run --name noip-autorenew-gui -d -p 5011:5000 -v /var/run/docker.sock:/var/run/docker.sock callbacked/noip-autorenew-gui:latest`
 
 2. Open your browser and go to `localhost:5011`. 
 
